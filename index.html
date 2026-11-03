@@ -57,6 +57,48 @@
     .icon-button:hover{background:#faf3f9}
     .empty{color:#8a8390}
     @media(max-width:760px){.hero h1{line-height:1.26}.brandname{font-size:18px}.toolbar{gap:6px}.toolbar button{flex:1;white-space:nowrap}.panel-title{font-size:16px}}
+
+/* Money Diary v3 enhancements: recurring expenses, filters, and analytics */
+.section-subtitle{font-size:12px;color:var(--muted);line-height:1.65;margin:-9px 0 18px}
+.jump-links{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0 2px}.jump-links a{display:inline-flex;align-items:center;gap:5px;text-decoration:none;font-weight:740;font-size:12px;color:#6e587c;padding:10px 13px;border:1px solid #e9ddea;border-radius:99px;background:#fff;box-shadow:0 2px 8px rgba(100,76,101,.04)}.jump-links a:focus-visible{outline:3px solid #d6bedf;outline-offset:2px}
+.soft-button{border:1px solid #e8deeb;border-radius:11px;background:#fcf8fd;color:#685575;padding:10px 13px;font-weight:700;font-size:12px}
+.soft-button:hover{background:#f5eaf7}
+.control-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:11px}
+.control-grid .field{margin-bottom:8px}
+.control-grid .wide-2{grid-column:span 2}
+.control-grid .wide-4{grid-column:1/-1}
+.field .text-label{font-size:12px}
+.recurring-form{background:#fcf8fc;border:1px solid #f0e9f2;border-radius:15px;padding:17px;margin-bottom:16px}
+.recurring-form .primary-button{max-width:310px}
+.recurring-list{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.recurring-item{background:#fff;border:1px solid #eee6f0;border-radius:14px;padding:13px;display:flex;gap:11px;align-items:flex-start;min-width:0}
+.recurring-item.paused{opacity:.72}
+.recurring-info{flex:1;min-width:0}
+.recurring-title{font-weight:750;color:var(--ink);font-size:14px;overflow-wrap:anywhere}
+.recurring-desc{font-size:11px;line-height:1.65;color:var(--muted);margin-top:5px}
+.recurring-controls{display:flex;gap:5px;flex-wrap:wrap;margin-top:9px}
+.recurring-controls button{font-size:11px;padding:6px 9px}
+.status-tag{display:inline-block;margin-top:5px;font-size:10px;padding:3px 7px;border-radius:99px;background:#e8f5ee;color:#3a8060}
+.status-tag.off{background:#f3edf2;color:#897984}
+.filter-actions{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:7px}
+.filter-summary{color:var(--muted);font-size:12px}
+.analytics-cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.analytics-card{background:#fbf6fa;border:1px solid #f0e8ee;border-radius:14px;padding:15px;min-width:0}
+.analytics-label{font-size:11px;color:#7c7181;min-height:27px}
+.analytics-number{font-size:20px;font-weight:800;color:#665477;overflow-wrap:anywhere;margin:9px 0 6px;font-variant-numeric:tabular-nums}
+.analytics-note{font-size:11px;color:#89818a;line-height:1.5}
+.chart-title{font-size:13px;font-weight:740;color:#675772;margin-top:20px;margin-bottom:10px}
+.analytics-bar-row{display:grid;grid-template-columns:minmax(0,110px) 1fr auto;gap:10px;align-items:center;padding:7px 0}
+.analytics-bar-name{font-size:11px;color:#756a79;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.analytics-track{height:11px;background:#f1eaf2;border-radius:999px;overflow:hidden}
+.analytics-fill{height:100%;background:#c5a4d3;border-radius:999px}
+.analytics-fill.trend{background:#e7b2a0}
+.analytics-bar-value{font-size:11px;color:#675772;font-variant-numeric:tabular-nums;min-width:73px;text-align:right}
+.analytical-note{font-size:11px;color:#8f8391;line-height:1.6;margin-top:12px}
+.recurring-record-label{font-size:10px;color:#947aa0;margin-top:4px}
+@media(max-width:760px){.control-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.control-grid .wide-2{grid-column:span 2}.control-grid .wide-4{grid-column:1/-1}.recurring-list{grid-template-columns:1fr}.analytics-cards{grid-template-columns:repeat(2,minmax(0,1fr))}.analytics-number{font-size:18px}.analytics-bar-row{grid-template-columns:minmax(0,86px) 1fr auto;gap:6px}.analytics-bar-value{min-width:65px;font-size:10px}.recurring-form{padding:13px}}
+@media(max-width:390px){.analytics-cards{gap:7px}.analytics-card{padding:12px}.analytics-number{font-size:16px}.control-grid{gap:8px}}
+
   </style>
 </head>
 <body>
@@ -73,6 +115,7 @@
       <div class="stat"><div class="stat-label">💖 Balance</div><div id="balanceTotal" class="stat-value balance-positive">RM 0.00</div><div class="stat-note">Income − Expenses</div></div>
     </div>
   </section>
+  <nav class="jump-links" aria-label="Jump to a feature"><a href="#formPanel">💖 Add</a><a href="#recurringSection">🔁 Monthly Bills</a><a href="#analyticsSection">📈 Analytics</a><a href="#searchSection">🔍 Search</a></nav>
   <div class="layout">
     <section class="panel" id="formPanel"><div class="panel-head"><h2 class="panel-title" id="formTitle">✏️ Add a Transaction</h2><span class="pill">QUICK ADD</span></div>
       <form id="transactionForm">
@@ -84,6 +127,53 @@
       </form><p class="helper">🔐 Your entries are stored only in this browser, not synced online. Please use <strong>Back Up</strong> regularly.</p>
     </section>
     <section class="panel"><div class="panel-head"><h2 class="panel-title">🍓 Spending Breakdown</h2><span class="pill" id="categoryCount">0 CATEGORIES</span></div><div id="breakdownPanel"><div class="empty"><span class="empty-symbol">◌</span>No expenses this month yet.<br>Log an expense to see your breakdown. 🌱</div></div></section>
+
+  <section class="panel full" id="recurringSection">
+    <div class="panel-head"><h2 class="panel-title">🔁 Recurring Expenses</h2><span class="pill" id="recurringCount">0 ACTIVE</span></div>
+    <p class="section-subtitle">Add monthly bills once. When you open Money Diary on or after their due date, they are automatically recorded once. Future payments are never counted early. 🧸</p>
+    <form class="recurring-form" id="recurringForm">
+      <div class="control-grid">
+        <div class="field wide-2"><label class="field-label" for="recurringName">📝 Bill name</label><input id="recurringName" maxlength="60" placeholder="e.g. Phone bill, Netflix" required></div>
+        <div class="field"><label class="field-label" for="recurringAmount">💵 Amount (RM)</label><input id="recurringAmount" type="number" inputmode="decimal" step="0.01" min="0.01" max="1000000000000" placeholder="49.90" required></div>
+        <div class="field"><label class="field-label" for="recurringDay">📅 Due day (1–31)</label><input id="recurringDay" type="number" min="1" max="31" step="1" required></div>
+        <div class="field wide-2"><label class="field-label" for="recurringCategory">🏷️ Category</label><select id="recurringCategory" required></select></div>
+        <div class="field wide-2"><label class="field-label" for="recurringStart">🗓️ Start date</label><input id="recurringStart" type="date" required></div>
+      </div>
+      <button type="submit" class="primary-button" id="saveRecurring">💜 Add Monthly Expense</button>
+      <button type="button" class="cancel-button hidden" id="cancelRecurring">Cancel Editing</button>
+      <div class="analytical-note">💡 This logs an expense, not a bank payment. Check the amount when it changes. If you already logged this month's bill manually, set the start date after that payment to avoid counting it twice. For day 29–31, shorter months use their last day.</div>
+    </form>
+    <div id="recurringList" class="recurring-list"></div>
+    <p class="analytical-note">Pausing a bill stops new entries. Resuming starts from that day; existing transactions stay unchanged. Editing a schedule affects future entries only.</p>
+  </section>
+
+  <section class="panel full" id="analyticsSection">
+    <div class="panel-head"><h2 class="panel-title">📈 Advanced Analytics</h2><span class="pill">MONEY INSIGHTS</span></div>
+    <p class="section-subtitle">Insights use the month selected at the top. Search filters do not change your totals. 🌷</p>
+    <div class="analytics-cards">
+      <div class="analytics-card"><div class="analytics-label">🐷 Savings Rate</div><div class="analytics-number" id="savingsRate">—</div><div class="analytics-note" id="savingsNote">Income needed</div></div>
+      <div class="analytics-card"><div class="analytics-label">☕ Average Daily Spend</div><div class="analytics-number" id="dailyAverage">RM 0.00</div><div class="analytics-note">Per elapsed day</div></div>
+      <div class="analytics-card"><div class="analytics-label">🍓 Top Expense Category</div><div class="analytics-number" id="topCategory">—</div><div class="analytics-note" id="topCategoryValue">No expenses yet</div></div>
+      <div class="analytics-card"><div class="analytics-label">📊 vs Previous Month</div><div class="analytics-number" id="monthChange">—</div><div class="analytics-note" id="monthChangeNote">Expense comparison</div></div>
+    </div>
+    <div class="chart-title">🛍️ Top spending categories · selected month</div><div id="topCategoriesChart"></div>
+    <div class="chart-title">🌙 Expense trend · last 6 months</div><div id="expenseTrendChart"></div>
+    <p class="analytical-note">Savings rate = (income − expenses) ÷ income. Daily average uses days elapsed in the current month, or calendar days for past months. The amounts reflect records entered in this App.</p>
+  </section>
+
+  <section class="panel full" id="searchSection">
+    <div class="panel-head"><h2 class="panel-title">🔍 Search & Filter</h2><span class="pill">FIND YOUR ENTRIES</span></div>
+    <div class="control-grid">
+      <div class="field wide-2"><label class="field-label" for="searchText">🔎 Search description or category</label><input id="searchText" type="search" placeholder="e.g. Coffee, rent, shopping"></div>
+      <div class="field"><label class="field-label" for="searchType">💳 Type</label><select id="searchType"><option value="all">All types</option><option value="expense">Expenses</option><option value="income">Income</option></select></div>
+      <div class="field"><label class="field-label" for="searchCategory">🏷️ Category</label><select id="searchCategory"><option value="all">All categories</option></select></div>
+      <div class="field"><label class="field-label" for="searchPeriod">🗓️ Date range</label><select id="searchPeriod"><option value="month">Selected month</option><option value="all">All dates</option><option value="custom">Custom dates</option></select></div>
+      <div class="field"><label class="field-label" for="searchSort">↕️ Sort by</label><select id="searchSort"><option value="newest">Newest first</option><option value="oldest">Oldest first</option><option value="high">Highest amount</option><option value="low">Lowest amount</option></select></div>
+      <div class="field hidden" id="filterStartWrap"><label class="field-label" for="filterStart">From</label><input id="filterStart" type="date"></div>
+      <div class="field hidden" id="filterEndWrap"><label class="field-label" for="filterEnd">To</label><input id="filterEnd" type="date"></div>
+    </div>
+    <div class="filter-actions"><span class="filter-summary" id="filterSummary">Showing the selected month</span><button class="soft-button" type="button" id="clearFilters">↺ Clear Filters</button></div>
+  </section>
     <section class="panel full"><div class="records-top"><h2 class="panel-title">🧾 Your Transactions</h2><span id="recordCount" class="pill">0 transactions</span></div><div id="recordList"><div class="empty">No transactions for this month yet. 🐣</div></div></section>
     <section class="panel full"><div class="panel-head"><h2 class="panel-title" id="annualTitle">📊 Yearly Overview</h2><span class="pill">INCOME / EXPENSES</span></div><div id="yearSummary" class="year-summary" aria-label="Monthly income and expenses comparison chart"></div><p class="summary-foot"><span class="mini-dot green"></span> Green = income &nbsp; <span class="mini-dot peach"></span> Peach = expenses. The chart updates as you add entries.</p></section>
   </div>
@@ -104,7 +194,7 @@ let records=readRecords();let txType='expense';let editId=null;let toastTimer;
 function pad(n){return String(n).padStart(2,'0')}
 function localToday(){const d=new Date();return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`}
 function money(n){const neg=n<0;const a=Math.abs(n);return `${neg?'−':''}RM ${a.toLocaleString('en-MY',{minimumFractionDigits:2,maximumFractionDigits:2})}`}
-function sanitizeRecord(x){if(!x||typeof x!=='object')return null;const date=String(x.date||'');const type=x.type;const amount=Number(x.amount);if(!/^\d{4}-\d{2}-\d{2}$/.test(date)||!['income','expense'].includes(type)||!Number.isFinite(amount)||amount<=0||amount>1e12)return null;const id=String(x.id||'');return {id:id||newId(),date,type,amount:Math.round(amount*100)/100,category:(LEGACY_CATS[String(x.category||'')]||String(x.category|| (type==='income'?'Other Income':'Other Expenses'))).slice(0,40),note:String(x.note||'').slice(0,100)}}
+function sanitizeRecord(x){if(!x||typeof x!=='object')return null;const date=String(x.date||'');const type=x.type;const amount=Number(x.amount);if(!/^\d{4}-\d{2}-\d{2}$/.test(date)||!['income','expense'].includes(type)||!Number.isFinite(amount)||amount<=0||amount>1e12)return null;const id=String(x.id||'');return {id:id||newId(),date,type,amount:Math.round(amount*100)/100,category:(LEGACY_CATS[String(x.category||'')]||String(x.category|| (type==='income'?'Other Income':'Other Expenses'))).slice(0,40),note:String(x.note||'').slice(0,100),...(typeof x.recurringId==='string'&&x.recurringId?{recurringId:x.recurringId.slice(0,100)}:{}),...(typeof x.recurringMonth==='string'&&/^\d{4}-\d{2}$/.test(x.recurringMonth)?{recurringMonth:x.recurringMonth}:{})}}
 function readRecords(){try{const d=JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]');return Array.isArray(d)?d.map(sanitizeRecord).filter(Boolean):[]}catch(e){return []}}
 function persist(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(records));return true}catch(e){toast('Could not save. Please check your browser storage.');return false}}
 function newId(){return (typeof crypto!=='undefined'&&crypto.randomUUID)?crypto.randomUUID():Date.now()+'-'+Math.random().toString(36).slice(2)}
@@ -112,16 +202,16 @@ function toast(message){const t=$('toast');t.textContent=message;t.classList.add
 function setType(type){txType=type;$('incomeType').classList.toggle('selected',type==='income');$('expenseType').classList.toggle('selected',type==='expense');const options=CATS[type];$('categoryField').replaceChildren(...options.map(v=>new Option(`${CAT_EMOJI[v]||'✨'} ${v}`,v)))}
 function changeMonth(diff){const s=$('monthInput').value;const m=/^(\d{4})-(\d{2})$/.exec(s);if(!m)return;const d=new Date(Number(m[1]),Number(m[2])-1+diff,1);$('monthInput').value=`${d.getFullYear()}-${pad(d.getMonth()+1)}`;render()}
 function el(tag,cl,txt){const e=document.createElement(tag);if(cl)e.className=cl;if(txt!==undefined)e.textContent=txt;return e}
-function render(){const month=$('monthInput').value||localToday().slice(0,7);const items=records.filter(x=>x.date.slice(0,7)===month).sort((a,b)=>b.date.localeCompare(a.date)||b.id.localeCompare(a.id));const income=items.filter(x=>x.type==='income').reduce((s,x)=>s+x.amount,0);const expense=items.filter(x=>x.type==='expense').reduce((s,x)=>s+x.amount,0);const bal=income-expense;$('incomeTotal').textContent=money(income);$('expenseTotal').textContent=money(expense);$('balanceTotal').textContent=money(bal);$('balanceTotal').className='stat-value '+(bal<0?'balance-negative':'balance-positive');$('recordCount').textContent=`${items.length} ${items.length===1?'transaction':'transactions'}`;renderBreakdown(items,expense);renderRecords(items);renderYear(month.slice(0,4))}
+function render(){const month=$('monthInput').value||localToday().slice(0,7);const items=records.filter(x=>x.date.slice(0,7)===month).sort((a,b)=>b.date.localeCompare(a.date)||b.id.localeCompare(a.id));const income=items.filter(x=>x.type==='income').reduce((s,x)=>s+x.amount,0);const expense=items.filter(x=>x.type==='expense').reduce((s,x)=>s+x.amount,0);const bal=income-expense;$('incomeTotal').textContent=money(income);$('expenseTotal').textContent=money(expense);$('balanceTotal').textContent=money(bal);$('balanceTotal').className='stat-value '+(bal<0?'balance-negative':'balance-positive');$('recordCount').textContent=`${items.length} ${items.length===1?'transaction':'transactions'}`;renderBreakdown(items,expense);renderRecords(getFilteredRecords(items));renderYear(month.slice(0,4));renderAnalytics(month,items,income,expense);renderRecurring()}
 function renderBreakdown(items,expense){const holder=$('breakdownPanel');holder.replaceChildren();const categoryMap={};for(const r of items){if(r.type==='expense')categoryMap[r.category]=(categoryMap[r.category]||0)+r.amount}const entries=Object.entries(categoryMap).sort((a,b)=>b[1]-a[1]);$('categoryCount').textContent=`${entries.length} CATEGORIES`;if(!entries.length){const empty=el('div','empty');const sym=el('span','empty-symbol','🌱');empty.append(sym,document.createTextNode('No expenses yet this month.'));empty.append(el('br'));empty.append(document.createTextNode('Add your first expense to see the details!'));holder.append(empty);return}const wrapper=el('div','breakdown');const donut=el('div','donut');let acc=0;const slices=entries.map(([name,value],i)=>{const start=acc;acc+=(value/expense)*100;return `${COLORS[i%COLORS.length]} ${start}% ${acc}%`});donut.style.background=`conic-gradient(${slices.join(',')})`;const center=el('div','donut-inner');center.append(el('span','', 'Total Spent'),el('strong','',money(expense)));donut.append(center);const legend=el('div','legend');entries.slice(0,7).forEach(([name,value],i)=>{const line=el('div','legend-item');const dot=el('span','dot');dot.style.background=COLORS[i%COLORS.length];line.append(dot,el('span','legend-name',name),el('span','legend-amount',Math.round(value/expense*100)+'%'));legend.append(line)});wrapper.append(donut,legend);holder.append(wrapper)}
-function renderRecords(items){const holder=$('recordList');holder.replaceChildren();if(!items.length){holder.append(el('div','empty','🐣 No transactions yet this month. Add your first one!'));return}for(const r of items){const item=el('div','record');const symbol=el('div','record-symbol '+r.type,ICONS[r.category]|| (r.type==='income'?'💰':'✨'));const main=el('div','record-main');main.append(el('div','record-name',r.note||r.category),el('div','record-detail',`${r.date} · ${r.category}`));const end=el('div','record-end');const amount=el('div','record-amount '+r.type,`${r.type==='income'?'+':'−'}${money(r.amount)}`);const actions=el('div','record-actions');const edit=el('button','icon-button','✏️');edit.type='button';edit.title='Edit transaction';edit.setAttribute('aria-label','Edit transaction');edit.addEventListener('click',()=>startEdit(r.id));const del=el('button','icon-button','🗑️');del.type='button';del.title='Delete transaction';del.setAttribute('aria-label','Delete transaction');del.addEventListener('click',()=>deleteRecord(r.id));actions.append(edit,del);end.append(amount,actions);item.append(symbol,main,end);holder.append(item)}}
+function renderRecords(items){const holder=$('recordList');holder.replaceChildren();if(!items.length){holder.append(el('div','empty',hasFilters()?'🔎 No matching transactions. Try changing your filters.':'🐣 No transactions yet this month. Add your first one!'));return}for(const r of items){const item=el('div','record');const symbol=el('div','record-symbol '+r.type,ICONS[r.category]|| (r.type==='income'?'💰':'✨'));const main=el('div','record-main');main.append(el('div','record-name',r.note||r.category),el('div','record-detail',`${r.date} · ${r.category}`));if(r.recurringId)main.append(el('div','recurring-record-label','🔁 Recurring expense'));const end=el('div','record-end');const amount=el('div','record-amount '+r.type,`${r.type==='income'?'+':'−'}${money(r.amount)}`);const actions=el('div','record-actions');const edit=el('button','icon-button','✏️');edit.type='button';edit.title='Edit transaction';edit.setAttribute('aria-label','Edit transaction');edit.addEventListener('click',()=>startEdit(r.id));const del=el('button','icon-button','🗑️');del.type='button';del.title='Delete transaction';del.setAttribute('aria-label','Delete transaction');del.addEventListener('click',()=>deleteRecord(r.id));actions.append(edit,del);end.append(amount,actions);item.append(symbol,main,end);holder.append(item)}}
 function renderYear(year){$('annualTitle').textContent=`📊 ${year} Yearly Overview`;const stats=Array.from({length:12},(_,i)=>{const month=`${year}-${pad(i+1)}`;const arr=records.filter(r=>r.date.startsWith(month));return {income:arr.filter(r=>r.type==='income').reduce((s,r)=>s+r.amount,0),expense:arr.filter(r=>r.type==='expense').reduce((s,r)=>s+r.amount,0)}});const max=Math.max(1,...stats.flatMap(v=>[v.income,v.expense]));const panel=$('yearSummary');panel.replaceChildren();stats.forEach((s,i)=>{const cell=el('div','bar-stack');const bars=el('div','bars');const green=el('div','bar');green.style.height=`${s.income?Math.max(3,s.income/max*88):0}px`;green.title=`${new Date(Number(year),i,1).toLocaleString('en',{month:'long'})} income: ${money(s.income)}`;const orange=el('div','bar ex');orange.style.height=`${s.expense?Math.max(3,s.expense/max*88):0}px`;orange.title=`${new Date(Number(year),i,1).toLocaleString('en',{month:'long'})} expenses: ${money(s.expense)}`;bars.append(green,orange);cell.append(bars,el('div','bar-label',new Date(Number(year),i,1).toLocaleString('en',{month:'short'})));panel.append(cell)})}
 function resetForm(){editId=null;$('transactionForm').reset();$('dateField').value=localToday();$('formTitle').textContent='✏️ Add a Transaction';$('saveBtn').textContent='💖 Save Transaction';$('cancelEdit').classList.add('hidden');setType('expense')}
 function startEdit(id){const r=records.find(x=>x.id===id);if(!r)return;editId=id;setType(r.type);$('dateField').value=r.date;$('amountField').value=r.amount;$('categoryField').value=r.category;if($('categoryField').value!==r.category)$('categoryField').add(new Option(r.category,r.category,true,true));$('noteField').value=r.note;$('formTitle').textContent='✏️ Edit Transaction';$('saveBtn').textContent='💖 Save Changes';$('cancelEdit').classList.remove('hidden');$('formPanel').scrollIntoView({behavior:'smooth',block:'start'});$('amountField').focus({preventScroll:true})}
 function deleteRecord(id){if(!confirm('Delete this transaction? This cannot be undone.'))return;const prev=records.slice();records=records.filter(r=>r.id!==id);if(!persist()){records=prev;return}if(editId===id)resetForm();render();toast('Transaction deleted 🗑️')}
 function download(filename,content,mime){const blob=new Blob([content],{type:mime});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=filename;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1500)}
 function csvEscape(s){const str=String(s??'');return '"'+str.replace(/"/g,'""')+'"'}
-$('transactionForm').addEventListener('submit',e=>{e.preventDefault();const candidate=sanitizeRecord({id:editId||newId(),date:$('dateField').value,type:txType,amount:$('amountField').value,category:$('categoryField').value,note:$('noteField').value.trim()});if(!candidate){toast('Please enter a valid date and an amount above zero.');return}const prev=records.slice();if(editId)records=records.map(r=>r.id===editId?candidate:r);else records.push(candidate);if(!persist()){records=prev;return}const edited=!!editId;$('monthInput').value=candidate.date.slice(0,7);resetForm();render();toast(edited?'Transaction updated 💕':'Transaction saved 💖')});
+$('transactionForm').addEventListener('submit',e=>{e.preventDefault();const candidate=sanitizeRecord({id:editId||newId(),date:$('dateField').value,type:txType,amount:$('amountField').value,category:$('categoryField').value,note:$('noteField').value.trim(),recurringId:editId?(records.find(r=>r.id===editId)||{}).recurringId:null,recurringMonth:editId?(records.find(r=>r.id===editId)||{}).recurringMonth:null});if(!candidate){toast('Please enter a valid date and an amount above zero.');return}const prev=records.slice();if(editId)records=records.map(r=>r.id===editId?candidate:r);else records.push(candidate);if(!persist()){records=prev;return}const edited=!!editId;$('monthInput').value=candidate.date.slice(0,7);resetForm();render();toast(edited?'Transaction updated 💕':'Transaction saved 💖')});
 $('incomeType').addEventListener('click',()=>setType('income'));
 $('expenseType').addEventListener('click',()=>setType('expense'));
 $('cancelEdit').addEventListener('click',resetForm);
@@ -129,10 +219,95 @@ $('prevMonth').addEventListener('click',()=>changeMonth(-1));
 $('nextMonth').addEventListener('click',()=>changeMonth(1));
 $('monthInput').addEventListener('change',render);
 $('csvBtn').addEventListener('click',()=>{const month=$('monthInput').value;const items=records.filter(r=>r.date.startsWith(month)).sort((a,b)=>a.date.localeCompare(b.date));const csv=['Date,Type,Category,Description,Amount (RM)',...items.map(r=>[r.date,r.type==='income'?'Income':'Expense',r.category,r.note,(r.type==='expense'?'-':'')+r.amount.toFixed(2)].map(csvEscape).join(','))].join('\r\n');download(`Money_Tracker_${month}.csv`,'\uFEFF'+csv,'text/csv;charset=utf-8');toast('This month’s CSV has been exported 📄')});
-$('backupBtn').addEventListener('click',()=>{download(`Money_Tracker_Backup_${localToday()}.json`,JSON.stringify({app:'monthly-money-tracker',version:1,exportedAt:new Date().toISOString(),records},null,2),'application/json');toast('Backup downloaded. Keep it safe! 💾')});
+$('backupBtn').addEventListener('click',()=>{download(`Money_Tracker_Backup_${localToday()}.json`,JSON.stringify({app:'monthly-money-tracker',version:2,exportedAt:new Date().toISOString(),records,recurring},null,2),'application/json');toast('Backup downloaded. Keep it safe! 💾')});
 $('restoreBtn').addEventListener('click',()=>$('fileInput').click());
-$('fileInput').addEventListener('change',async e=>{const file=e.target.files?.[0];if(!file)return;try{if(file.size>10*1024*1024)throw Error('Backup file is too large.');const backup=JSON.parse(await file.text());if(backup.app!=='monthly-money-tracker'||!Array.isArray(backup.records))throw Error('This is not a Money Tracker backup.');const parsed=backup.records.map(sanitizeRecord);if(parsed.some(x=>!x))throw Error('The backup contains invalid entries.');if(!confirm(`Restore ${parsed.length} transaction(s) and replace the ${records.length} currently saved here? Back up your current data first. Continue?`))return;const prev=records.slice();records=parsed;if(!persist()){records=prev;return}resetForm();render();toast(`Restored ${parsed.length} transaction(s) 💕`)}catch(err){toast('Restore failed: '+err.message)}finally{e.target.value=''}});
-$('monthInput').value=localToday().slice(0,7);resetForm();render();
+$('fileInput').addEventListener('change',async e=>{const file=e.target.files?.[0];if(!file)return;try{if(file.size>10*1024*1024)throw Error('Backup file is too large.');const backup=JSON.parse(await file.text());if(backup.app!=='monthly-money-tracker'||!Array.isArray(backup.records))throw Error('This is not a Money Tracker backup.');const parsed=backup.records.map(sanitizeRecord);if(parsed.some(x=>!x))throw Error('The backup contains invalid entries.');const replacement=readBackupRecurring(backup);if(!confirm(`Restore ${parsed.length} transaction(s) and ${replacement.rules.length} monthly schedule(s)? This REPLACES all existing records and schedules on this device. Make a backup first. Continue?`))return;const prev=records.slice(),prevRecurring=recurring;records=parsed;recurring=replacement;if(!persist()||!persistRecurring()){records=prev;recurring=prevRecurring;persist();persistRecurring();return}resetForm();resetRecurringForm();render();toast(`Restored ${parsed.length} transaction(s) and schedules 💕`)}catch(err){toast('Restore failed: '+err.message)}finally{e.target.value=''}});
+
+// --- v3: recurring expense templates, local-only. ---
+const RECUR_KEY='money-diary-recurring-v1';
+let recurring=loadRecurring(), editRecurringId=null;
+function validDate(d){if(!/^\d{4}-\d{2}-\d{2}$/.test(String(d||'')))return false;const dt=new Date(d+'T12:00:00');return Number.isFinite(dt.getTime())&&`${dt.getFullYear()}-${pad(dt.getMonth()+1)}-${pad(dt.getDate())}`===d}
+function cleanRule(x){if(!x||typeof x!=='object')return null;const day=Number(x.day),amount=Number(x.amount);if(!Number.isInteger(day)||day<1||day>31||!Number.isFinite(amount)||amount<=0||amount>1e12||!validDate(String(x.startDate||'')))return null;return {id:String(x.id||newId()).slice(0,100),name:String(x.name||'Monthly bill').trim().slice(0,60),category:String(x.category||'Bills').slice(0,40),amount:Math.round(amount*100)/100,day,startDate:String(x.startDate),active:x.active!==false}}
+function readBackupRecurring(back){if(!back.recurring)return {rules:[],applied:{}};const raw=back.recurring;if(!raw||!Array.isArray(raw.rules)||typeof raw.applied!=='object'||raw.applied===null||Array.isArray(raw.applied))throw Error('Invalid recurring schedules in backup.');const rules=raw.rules.map(cleanRule);if(rules.some(x=>!x))throw Error('Invalid monthly bill in backup.');const applied={};for(const rule of rules){const a=raw.applied[rule.id];applied[rule.id]=Array.isArray(a)?[...new Set(a.filter(m=>typeof m==='string'&&/^\d{4}-\d{2}$/.test(m)))]:[]}return {rules,applied}}
+function loadRecurring(){try{return readBackupRecurring({recurring:JSON.parse(localStorage.getItem(RECUR_KEY)||'{"rules":[],"applied":{}}')})}catch(e){return {rules:[],applied:{}}}}
+function persistRecurring(){try{localStorage.setItem(RECUR_KEY,JSON.stringify(recurring));return true}catch(e){toast('Could not save the monthly bills. Check your device storage.');return false}}
+function monthKey(y,m){return `${y}-${pad(m)}`}
+function dueInMonth(year,month,day){const last=new Date(year,month,0).getDate();return `${monthKey(year,month)}-${pad(Math.min(day,last))}`}
+function nextDue(rule){const now=localToday();const dt=new Date(now+'T12:00:00');for(let i=0;i<240;i++){const candidate=new Date(dt.getFullYear(),dt.getMonth()+i,1);const due=dueInMonth(candidate.getFullYear(),candidate.getMonth()+1,rule.day);if(due>=now&&due>=rule.startDate&&!((recurring.applied[rule.id]||[]).includes(due.slice(0,7))))return due}return '—'}
+function autoPostDue(){const now=localToday();const dt=new Date(now+'T12:00:00');let count=0,dirty=false;const previous=records.slice();const oldApplied=JSON.stringify(recurring.applied);
+ for(const rule of recurring.rules){if(!rule.active)continue;const start=rule.startDate.slice(0,7);const initial=new Date(start+'-01T12:00:00');const total=(dt.getFullYear()-initial.getFullYear())*12+dt.getMonth()-initial.getMonth();if(total<0)continue;
+  for(let index=Math.max(0,total-119);index<=total;index++){const candidate=new Date(initial.getFullYear(),initial.getMonth()+index,1);const ym=monthKey(candidate.getFullYear(),candidate.getMonth()+1);const due=dueInMonth(candidate.getFullYear(),candidate.getMonth()+1,rule.day);if(due<rule.startDate||due>now)continue;
+   if(!recurring.applied[rule.id])recurring.applied[rule.id]=[];
+   if(recurring.applied[rule.id].includes(ym))continue;
+   recurring.applied[rule.id].push(ym);dirty=true;
+   if(!records.some(r=>r.recurringId===rule.id&&r.recurringMonth===ym)){const r=sanitizeRecord({id:newId(),date:due,type:'expense',amount:rule.amount,category:rule.category,note:rule.name,recurringId:rule.id,recurringMonth:ym});if(r){records.push(r);count++}}
+  }
+ }
+ if(!dirty)return 0;
+ if(!persist()||!persistRecurring()){records=previous;recurring.applied=JSON.parse(oldApplied);return 0}
+ if(count)toast(`${count} monthly expense${count===1?'':'s'} recorded 🔁`);
+ return count;
+}
+function resetRecurringForm(){editRecurringId=null;$('recurringForm').reset();$('recurringStart').value=localToday();$('recurringDay').value=String(Number(localToday().slice(8)));$('saveRecurring').textContent='💜 Add Monthly Expense';$('cancelRecurring').classList.add('hidden')}
+function editRule(id){const r=recurring.rules.find(x=>x.id===id);if(!r)return;editRecurringId=r.id;$('recurringName').value=r.name;$('recurringAmount').value=r.amount;$('recurringDay').value=r.day;$('recurringCategory').value=r.category;$('recurringStart').value=r.startDate;$('saveRecurring').textContent='💜 Save Monthly Expense';$('cancelRecurring').classList.remove('hidden');$('recurringForm').scrollIntoView({behavior:'smooth',block:'start'})}
+function flipRule(id){const rule=recurring.rules.find(x=>x.id===id);if(!rule)return;const old=JSON.stringify(recurring);rule.active=!rule.active;if(rule.active)rule.startDate=localToday();if(!persistRecurring()){recurring=JSON.parse(old);return}autoPostDue();render();toast(rule.active?'Monthly bill resumed 🌸':'Monthly bill paused ⏸️')}
+function removeRule(id){if(!confirm('Remove this monthly bill? Transactions already recorded will stay in your diary.'))return;const old=JSON.stringify(recurring);recurring.rules=recurring.rules.filter(x=>x.id!==id);delete recurring.applied[id];if(!persistRecurring()){recurring=JSON.parse(old);return}if(editRecurringId===id)resetRecurringForm();render();toast('Monthly bill removed 🗑️')}
+function renderRecurring(){const holder=$('recurringList');holder.replaceChildren();$('recurringCount').textContent=`${recurring.rules.filter(r=>r.active).length} ACTIVE`;
+ if(!recurring.rules.length){holder.append(el('div','empty','🌱 No monthly bills yet. Add your first recurring expense above.'));return}
+ const sorted=[...recurring.rules].sort((a,b)=>Number(b.active)-Number(a.active)||a.day-b.day);
+ for(const r of sorted){const card=el('div','recurring-item'+(r.active?'':' paused'));const emoji=el('div','record-symbol expense',CAT_EMOJI[r.category]||'🧾');const info=el('div','recurring-info');info.append(el('div','recurring-title',r.name),el('div','recurring-desc',`${money(r.amount)} · ${r.category} · day ${r.day} of each month`),el('div','recurring-desc',r.active?`Next due: ${nextDue(r)}`:'Not scheduling new transactions'));
+  const tag=el('span','status-tag'+(r.active?'':' off'),r.active?'Active':'Paused');info.append(tag);
+  const controls=el('div','recurring-controls');for(const [name,fn] of [['✏️ Edit',()=>editRule(r.id)],[r.active?'⏸ Pause':'▶ Resume',()=>flipRule(r.id)],['🗑 Remove',()=>removeRule(r.id)]]){const b=el('button','soft-button',name);b.type='button';b.addEventListener('click',fn);controls.append(b)}info.append(controls);card.append(emoji,info);holder.append(card)
+ }
+}
+$('recurringCategory').replaceChildren(...CATS.expense.map(v=>new Option(`${CAT_EMOJI[v]||'✨'} ${v}`,v)));
+$('recurringForm').addEventListener('submit',e=>{e.preventDefault();const raw={id:editRecurringId||newId(),name:$('recurringName').value,category:$('recurringCategory').value,amount:$('recurringAmount').value,day:$('recurringDay').value,startDate:$('recurringStart').value,active:true};if(editRecurringId){const existing=recurring.rules.find(r=>r.id===editRecurringId);if(existing)raw.active=existing.active}
+ const rule=cleanRule(raw);if(!rule||!rule.name){toast('Please enter a valid monthly expense.');return}const before=JSON.stringify(recurring);
+ if(editRecurringId){recurring.rules=recurring.rules.map(r=>r.id===editRecurringId?rule:r)}else{recurring.rules.push(rule);recurring.applied[rule.id]=[]}
+ if(!persistRecurring()){recurring=JSON.parse(before);return}
+ const wasEdit=!!editRecurringId;resetRecurringForm();autoPostDue();render();toast(wasEdit?'Monthly bill updated 💕':'Monthly bill added 🔁');
+});
+$('cancelRecurring').addEventListener('click',resetRecurringForm);
+
+// --- v3: search and filters, independent of the month overview ---
+function hasFilters(){return $('searchText').value.trim()||$('searchType').value!=='all'||$('searchCategory').value!=='all'||$('searchPeriod').value!=='month'||$('searchSort').value!=='newest'}
+function refreshCategoryOptions(){const select=$('searchCategory'),old=select.value;const cats=[...new Set([...CATS.income,...CATS.expense,...records.map(r=>r.category)])].sort((a,b)=>a.localeCompare(b));select.replaceChildren(new Option('All categories','all'),...cats.map(x=>new Option(`${CAT_EMOJI[x]||'✨'} ${x}`,x)));select.value=cats.includes(old)?old:'all'}
+function toggleCustomDates(){const active=$('searchPeriod').value==='custom';$('filterStartWrap').classList.toggle('hidden',!active);$('filterEndWrap').classList.toggle('hidden',!active)}
+function getFilteredRecords(monthItems){const term=$('searchText').value.trim().toLowerCase(),type=$('searchType').value,category=$('searchCategory').value,period=$('searchPeriod').value,from=$('filterStart').value,to=$('filterEnd').value;
+ let result=(period==='month'?monthItems:records).filter(r=>{
+  if(period==='custom'&&((from&&r.date<from)||(to&&r.date>to)))return false;
+  if(type!=='all'&&r.type!==type)return false;
+  if(category!=='all'&&r.category!==category)return false;
+  if(term&&!`${r.note} ${r.category} ${r.date} ${r.amount}`.toLowerCase().includes(term))return false;
+  return true;
+ });
+ const sort=$('searchSort').value;result=[...result].sort((a,b)=>sort==='oldest'?(a.date.localeCompare(b.date)||a.id.localeCompare(b.id)):sort==='high'?(b.amount-a.amount||b.date.localeCompare(a.date)):sort==='low'?(a.amount-b.amount||b.date.localeCompare(a.date)):(b.date.localeCompare(a.date)||b.id.localeCompare(a.id)));
+ $('recordCount').textContent=`${result.length} ${result.length===1?'transaction':'transactions'}`;
+ $('filterSummary').textContent=`${result.length} match${result.length===1?'':'es'} · ${period==='month'?'Selected month':period==='all'?'All dates':'Custom dates'}`;
+ return result;
+}
+for(const id of ['searchText','searchType','searchCategory','searchPeriod','searchSort','filterStart','filterEnd']){$(id).addEventListener(id==='searchText'?'input':'change',()=>{if(id==='searchPeriod')toggleCustomDates();render()})}
+$('clearFilters').addEventListener('click',()=>{$('searchText').value='';$('searchType').value='all';$('searchCategory').value='all';$('searchPeriod').value='month';$('searchSort').value='newest';$('filterStart').value='';$('filterEnd').value='';toggleCustomDates();render()});
+
+// --- v3: advanced analytics with no external libraries ---
+function totalFor(month,type){return records.filter(r=>r.date.startsWith(month)&&r.type===type).reduce((a,r)=>a+r.amount,0)}
+function compactMoney(amount){return money(amount)}
+function addChartRow(holder,label,value,max,emoji,trend=false){const row=el('div','analytics-bar-row');const name=el('div','analytics-bar-name',`${emoji} ${label}`);name.title=label;const track=el('div','analytics-track');const fill=el('div','analytics-fill'+(trend?' trend':''));fill.style.width=value>0?`${Math.max(2,100*value/Math.max(1,max))}%`:'0%';track.append(fill);row.append(name,track,el('div','analytics-bar-value',compactMoney(value)));holder.append(row)}
+function renderAnalytics(month,items,income,expense){
+ const savings=$('savingsRate'), note=$('savingsNote');if(income<=0){savings.textContent='—';note.textContent='Add income to calculate'}else{savings.textContent=`${((income-expense)/income*100).toFixed(1)}%`;note.textContent='Of income left over'}
+ const [year,mm]=month.split('-').map(Number);const days=new Date(year,mm,0).getDate(),today=localToday();const elapsed=month===today.slice(0,7)?Number(today.slice(8)):(month<today.slice(0,7)?days:0);$('dailyAverage').textContent=elapsed?money(expense/elapsed):'—';
+ const groups={};for(const r of items){if(r.type==='expense')groups[r.category]=(groups[r.category]||0)+r.amount}const ranked=Object.entries(groups).sort((a,b)=>b[1]-a[1]);$('topCategory').textContent=ranked.length?`${CAT_EMOJI[ranked[0][0]]||'🧾'} ${ranked[0][0]}`:'—';$('topCategoryValue').textContent=ranked.length?money(ranked[0][1]):'No expenses yet';
+ const previousDate=new Date(year,mm-2,1);const prev=monthKey(previousDate.getFullYear(),previousDate.getMonth()+1),prevExpense=totalFor(prev,'expense');if(prevExpense===0){$('monthChange').textContent=expense>0?'New':'—';$('monthChangeNote').textContent='No previous-month spending'}else{const percent=(expense-prevExpense)/prevExpense*100;$('monthChange').textContent=`${percent>0?'+':''}${percent.toFixed(1)}%`;$('monthChangeNote').textContent=percent>0?'Spent more than last month':percent<0?'Spent less than last month':'Same as last month'}
+ const top=$('topCategoriesChart');top.replaceChildren();if(!ranked.length){top.append(el('div','empty','No expenses to analyze this month 🌱'))}else{const max=ranked[0][1];for(const [name,value] of ranked.slice(0,6))addChartRow(top,name,value,max,CAT_EMOJI[name]||'🧾')}
+ const trend=$('expenseTrendChart');trend.replaceChildren();const data=[];for(let i=5;i>=0;i--){const d=new Date(year,mm-1-i,1);const m=monthKey(d.getFullYear(),d.getMonth()+1);data.push({name:d.toLocaleDateString('en',{month:'short',year:'2-digit'}),amount:totalFor(m,'expense')})}const max=Math.max(1,...data.map(x=>x.amount));for(const d of data)addChartRow(trend,d.name,d.amount,max,'🌙',true)
+}
+// Refresh search categories before the first render, and whenever the data changes.
+const oldRender=render;
+render=function(){refreshCategoryOptions();oldRender()};
+window.addEventListener('focus',()=>{if(autoPostDue())render()});
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&autoPostDue())render()});
+
+$('monthInput').value=localToday().slice(0,7);resetForm();resetRecurringForm();autoPostDue();render();
 if('serviceWorker' in navigator && location.protocol.startsWith('http')){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}))}
 })();
 </script>
